@@ -1,4 +1,4 @@
-package br.com.googlemaps.distance;
+package br.com.hbsis.distance;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
