@@ -1,6 +1,7 @@
 package br.com.hbsis.distance.services;
 
 import br.com.hbsis.distance.payloads.*;
+import br.com.hbsis.distance.payloads.apiintegration.*;
 import org.springframework.stereotype.Service;
 
 @Service

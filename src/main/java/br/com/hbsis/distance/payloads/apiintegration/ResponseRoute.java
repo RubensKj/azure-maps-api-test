@@ -1,4 +1,4 @@
-package br.com.hbsis.distance.payloads;
+package br.com.hbsis.distance.payloads.apiintegration;
 
 import java.util.List;
 
