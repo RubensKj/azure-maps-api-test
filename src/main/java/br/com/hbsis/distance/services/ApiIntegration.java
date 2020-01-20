@@ -1,9 +1,9 @@
 package br.com.hbsis.distance.services;
 
 import br.com.hbsis.distance.payloads.AddressDTO;
-import br.com.hbsis.distance.payloads.Position;
-import br.com.hbsis.distance.payloads.ResponseRoute;
-import br.com.hbsis.distance.payloads.ResponseSearch;
+import br.com.hbsis.distance.payloads.apiintegration.Position;
+import br.com.hbsis.distance.payloads.apiintegration.ResponseRoute;
+import br.com.hbsis.distance.payloads.apiintegration.ResponseSearch;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

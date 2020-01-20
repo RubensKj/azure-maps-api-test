@@ -1,5 +1,8 @@
 package br.com.hbsis.distance.payloads;
 
+import br.com.hbsis.distance.payloads.apiintegration.Position;
+import br.com.hbsis.distance.payloads.apiintegration.Summary;
+
 public class DistanceDTO {
 
     private Summary summary;

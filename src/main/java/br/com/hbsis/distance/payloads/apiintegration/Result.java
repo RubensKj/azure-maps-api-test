@@ -1,4 +1,6 @@
-package br.com.hbsis.distance.payloads;
+package br.com.hbsis.distance.payloads.apiintegration;
+
+import br.com.hbsis.distance.payloads.Address;
 
 public class Result {
 
