@@ -1,5 +1,6 @@
 package br.com.hbsis.distance.payloads;
 
+import br.com.hbsis.distance.payloads.apiintegration.Position;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,24 +11,20 @@ public class DistanceAddresses {
     private String id;
     private String origin;
     private String destination;
-    private int distance;
-    private String latOrigin;
-    private String lonOrigin;
-    private String latDestination;
-    private String lonDestination;
+    private int distanceInMeters;
+    private Position originPosition;
+    private Position destinationPosition;
 
 
     public DistanceAddresses() {
     }
 
-    public DistanceAddresses(String origin, String destination, int distance, String latOrigin, String lonOrigin, String latDestination, String lonDestination) {
+    public DistanceAddresses(String origin, String destination, int distanceInMeters, Position originPosition, Position destinationPosition) {
         this.origin = origin;
         this.destination = destination;
-        this.distance = distance;
-        this.latOrigin = latOrigin;
-        this.lonOrigin = lonOrigin;
-        this.latDestination = latDestination;
-        this.lonDestination = lonDestination;
+        this.distanceInMeters = distanceInMeters;
+        this.originPosition = originPosition;
+        this.destinationPosition = destinationPosition;
     }
 
     public String getId() {
@@ -54,43 +51,27 @@ public class DistanceAddresses {
         this.destination = destination;
     }
 
-    public int getDistance() {
-        return distance;
+    public int getDistanceInMeters() {
+        return distanceInMeters;
     }
 
-    public void setDistance(int distance) {
-        this.distance = distance;
+    public void setDistanceInMeters(int distanceInMeters) {
+        this.distanceInMeters = distanceInMeters;
     }
 
-    public String getLatOrigin() {
-        return latOrigin;
+    public Position getOriginPosition() {
+        return originPosition;
     }
 
-    public void setLatOrigin(String latOrigin) {
-        this.latOrigin = latOrigin;
+    public void setOriginPosition(Position originPosition) {
+        this.originPosition = originPosition;
     }
 
-    public String getLonOrigin() {
-        return lonOrigin;
+    public Position getDestinationPosition() {
+        return destinationPosition;
     }
 
-    public void setLonOrigin(String lonOrigin) {
-        this.lonOrigin = lonOrigin;
-    }
-
-    public String getLatDestination() {
-        return latDestination;
-    }
-
-    public void setLatDestination(String latDestination) {
-        this.latDestination = latDestination;
-    }
-
-    public String getLonDestination() {
-        return lonDestination;
-    }
-
-    public void setLonDestination(String lonDestination) {
-        this.lonDestination = lonDestination;
+    public void setDestinationPosition(Position destinationPosition) {
+        this.destinationPosition = destinationPosition;
     }
 }

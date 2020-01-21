@@ -6,6 +6,8 @@ import br.com.hbsis.distance.payloads.DistanceAddresses;
 import br.com.hbsis.distance.payloads.DistanceDTO;
 import br.com.hbsis.distance.payloads.apiintegration.*;
 import br.com.hbsis.distance.repositories.IAddressesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import static br.com.hbsis.distance.utils.ValidationUtils.validadeIfEmpty;
@@ -46,7 +48,7 @@ public class DistanceService {
         if (this.validateIfDistanceHasAlreadyBeenCalculated(addresses)) {
             DistanceAddresses distanceAddresses = this.findByOriginAndDestination(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()));
 
-            return new DistanceDTO(distanceAddresses.getDistance(), new Position(distanceAddresses.getLatOrigin(), distanceAddresses.getLonOrigin()), new Position(distanceAddresses.getLatDestination(), distanceAddresses.getLonDestination()));
+            return new DistanceDTO(distanceAddresses.getDistanceInMeters(), distanceAddresses.getOriginPosition(), distanceAddresses.getDestinationPosition());
         }
         Result resultOrigin = this.searchByAddress(addresses.getOrigin());
         Result resultDestination = this.searchByAddress(addresses.getDestination());
@@ -57,7 +59,7 @@ public class DistanceService {
     private DistanceDTO getSummary(Position origin, Position destination, Addresses addresses) {
         ResponseRoute distanceBetweenAddress = apiIntegration.getDistanceBetweenAddress(origin, destination);
         Routes routes = distanceBetweenAddress.getRoutes().stream().findAny().orElseThrow(() -> new IllegalStateException("Não foi encontrado nenhuma rota."));
-        this.iAddressesRepository.save(new DistanceAddresses(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()), routes.getSummary().getLengthInMeters(), origin.getLat(), origin.getLon(), destination.getLat(), destination.getLon()));
+        this.iAddressesRepository.save(new DistanceAddresses(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()), routes.getSummary().getLengthInMeters(), origin, destination));
         return new DistanceDTO(routes.getSummary().getLengthInMeters(), origin, destination);
     }
 
@@ -77,5 +79,9 @@ public class DistanceService {
 //                .filter(result -> result.getAddress().getMunicipality().contains(address.getCidade().toLowerCase()))
 //                .filter(result -> result.getAddress().getCountrySubdivision().contains(address.getEstado()))
                 .findAny().orElseThrow(() -> new IllegalStateException("Endereço não encontrado."));
+    }
+
+    public Page<DistanceAddresses> findAll(Pageable pageable) {
+        return this.iAddressesRepository.findAll(pageable);
     }
 }
