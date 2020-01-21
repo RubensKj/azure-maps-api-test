@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin("*")
 public class DistanceRest {
 
     private final DistanceService distanceService;
