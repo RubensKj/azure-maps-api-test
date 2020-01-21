@@ -37,6 +37,8 @@ public class DistanceService {
 
         validadeIfEmpty(addresses.getOrigin().getBairro(), "bairro da origem não pode ser vazio");
         validadeIfEmpty(addresses.getOrigin().getCidade(), "cidade do destino não pode ser vazia");
+        validadeIfEmpty(addresses.getDestination().getCidade(), "cidade do destino não pode ser vazia");
+        validadeIfEmpty(addresses.getDestination().getBairro(), "bairro do destino não pode ser vazio");
     }
 
     private DistanceDTO getDistanceBetweenAddresses(Addresses addresses) {
