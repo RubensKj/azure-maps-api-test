@@ -1,6 +1,9 @@
 package br.com.hbsis.distance.services;
 
-import br.com.hbsis.distance.payloads.*;
+import br.com.hbsis.distance.payloads.AddressDTO;
+import br.com.hbsis.distance.payloads.Addresses;
+import br.com.hbsis.distance.payloads.DistanceAddresses;
+import br.com.hbsis.distance.payloads.DistanceDTO;
 import br.com.hbsis.distance.payloads.apiintegration.*;
 import br.com.hbsis.distance.repositories.IAddressesRepository;
 import org.springframework.stereotype.Service;
