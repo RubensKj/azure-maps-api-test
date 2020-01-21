@@ -1,9 +1,11 @@
 package br.com.hbsis.distance.services;
 
 import br.com.hbsis.distance.payloads.AddressDTO;
+import br.com.hbsis.distance.payloads.Addresses;
 import br.com.hbsis.distance.payloads.apiintegration.Position;
 import br.com.hbsis.distance.payloads.apiintegration.ResponseRoute;
 import br.com.hbsis.distance.payloads.apiintegration.ResponseSearch;
+import br.com.hbsis.distance.repositories.IAddressesRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,11 +18,15 @@ public class ApiIntegration {
 
     private final PropertiesValues propertiesValues;
 
-    public ApiIntegration(PropertiesValues propertiesValues) {
+    private final IAddressesRepository iAddressesRepository;
+
+    public ApiIntegration(PropertiesValues propertiesValues, IAddressesRepository iAddressesRepository) {
         this.propertiesValues = propertiesValues;
+        this.iAddressesRepository = iAddressesRepository;
     }
 
     public ResponseSearch searchAddressToGeolocation(AddressDTO address) {
+
         RestTemplate restTemplate = HttpUtil.getRestTemplate();
         UriComponents build = UriComponentsBuilder.fromUriString(this.getUrlToSearchInAzure())
                 .queryParam("subscription-key", this.propertiesValues.getSubscriptionKey())
@@ -38,7 +44,7 @@ public class ApiIntegration {
         return this.propertiesValues.getUriAzureMapsInString().concat("/search/address/json");
     }
 
-    private String getAddressInStringByDTO(AddressDTO addressDTO) {
+    public String getAddressInStringByDTO(AddressDTO addressDTO) {
         if (addressDTO.getBairro().contains("Bairro")) {
             addressDTO.setBairro(addressDTO.getBairro().replace("Bairro ", ""));
         }

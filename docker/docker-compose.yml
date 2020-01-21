@@ -1,0 +1,7 @@
+mongo:
+  image: mongo
+  environment:
+    MONGO_INITDB_ROOT_USERNAME: sa
+    MONGO_INITDB_ROOT_PASSWORD: Teste123
+  ports:
+    - "27017:27017"

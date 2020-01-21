@@ -11,7 +11,6 @@ public class Address {
     private String country;
     private String freeformAddress;
 
-
     public Address() {
     }
 
