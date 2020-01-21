@@ -8,6 +8,9 @@ import br.com.hbsis.distance.payloads.apiintegration.*;
 import br.com.hbsis.distance.repositories.IAddressesRepository;
 import org.springframework.stereotype.Service;
 
+import static br.com.hbsis.distance.utils.ValidationUtils.validadeIfEmpty;
+import static br.com.hbsis.distance.utils.ValidationUtils.validateIfNull;
+
 @Service
 public class DistanceService {
 
@@ -24,7 +27,20 @@ public class DistanceService {
         return this.getDistanceBetweenAddresses(addresses);
     }
 
+    private void validate(Addresses addresses) {
+        validateIfNull(addresses.getOrigin().getBairro(), "bairro da origem não pode ser nulo");
+        validateIfNull(addresses.getOrigin().getCidade(), "cidade da origem não pode ser nula");
+        validateIfNull(addresses.getOrigin().getEstado(), "estado (UF) da origem não pode ser nulo");
+        validateIfNull(addresses.getDestination().getBairro(), "bairro do destino não pode ser nulo");
+        validateIfNull(addresses.getDestination().getCidade(), "cidade do destino não pode ser nula");
+        validateIfNull(addresses.getDestination().getEstado(), "estado do destino não pode ser nulo");
+
+        validadeIfEmpty(addresses.getOrigin().getBairro(), "bairro da origem não pode ser vazio");
+        validadeIfEmpty(addresses.getOrigin().getCidade(), "cidade do destino não pode ser vazia");
+    }
+
     private DistanceDTO getDistanceBetweenAddresses(Addresses addresses) {
+        this.validate(addresses);
         if (this.validateIfDistanceHasAlreadyBeenCalculated(addresses)) {
             DistanceAddresses distanceAddresses = this.findByOriginAndDestination(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()));
 
@@ -43,12 +59,11 @@ public class DistanceService {
         return new DistanceDTO(routes.getSummary().getLengthInMeters(), origin, destination);
     }
 
-    public DistanceAddresses findByOriginAndDestination(String origin, String destination) {
-        System.out.println(origin + " asdjiasdj " + destination);
+    private DistanceAddresses findByOriginAndDestination(String origin, String destination) {
         return this.iAddressesRepository.findByOriginContainingAndDestinationContaining(origin.trim(), destination.trim()).orElseThrow(() -> new IllegalArgumentException("Endereços não encontrados"));
     }
 
-    public boolean validateIfDistanceHasAlreadyBeenCalculated(Addresses addresses) {
+    private boolean validateIfDistanceHasAlreadyBeenCalculated(Addresses addresses) {
         return this.iAddressesRepository.existsByOriginAndDestination(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()));
     }
 
