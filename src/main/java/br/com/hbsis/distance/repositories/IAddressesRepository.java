@@ -1,6 +1,8 @@
 package br.com.hbsis.distance.repositories;
 
 import br.com.hbsis.distance.payloads.DistanceAddresses;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +14,6 @@ public interface IAddressesRepository extends MongoRepository<DistanceAddresses,
     boolean existsByOriginAndDestination(String origin, String destination);
 
     Optional<DistanceAddresses> findByOriginContainingAndDestinationContaining(String origin, String destination);
+
+    Page<DistanceAddresses> findAll(Pageable pageable);
 }
