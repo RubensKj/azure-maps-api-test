@@ -59,7 +59,9 @@ public class DistanceService {
     private DistanceDTO getSummary(Position origin, Position destination, Addresses addresses) {
         ResponseRoute distanceBetweenAddress = apiIntegration.getDistanceBetweenAddress(origin, destination);
         Routes routes = distanceBetweenAddress.getRoutes().stream().findAny().orElseThrow(() -> new IllegalStateException("Não foi encontrado nenhuma rota."));
-        this.iAddressesRepository.save(new DistanceAddresses(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()).trim(), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()).trim(), routes.getSummary().getLengthInMeters(), origin, destination));
+
+        new Thread(() -> this.iAddressesRepository.save(new DistanceAddresses(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()).trim(), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()).trim(), routes.getSummary().getLengthInMeters(), origin, destination))).start();
+
         return new DistanceDTO(routes.getSummary().getLengthInMeters(), origin, destination);
     }
 
@@ -73,12 +75,7 @@ public class DistanceService {
 
     private Result searchByAddress(AddressDTO address) {
         ResponseSearch responseSearch = apiIntegration.searchAddressToGeolocation(address);
-        return responseSearch.getResults().stream()
-//                .filter(result -> result.getAddress().getStreetName().contains(address.getRua()))
-//                .filter(result -> result.getAddress().getMunicipalitySubdivision().contains(address.getBairro()))
-//                .filter(result -> result.getAddress().getMunicipality().contains(address.getCidade().toLowerCase()))
-//                .filter(result -> result.getAddress().getCountrySubdivision().contains(address.getEstado()))
-                .findAny().orElseThrow(() -> new IllegalStateException("Endereço não encontrado."));
+        return responseSearch.getResults().stream().findAny().orElseThrow(() -> new IllegalStateException("Endereço não encontrado."));
     }
 
     public Page<DistanceAddresses> findAll(Pageable pageable) {
