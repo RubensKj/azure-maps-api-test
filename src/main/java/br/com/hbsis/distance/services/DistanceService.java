@@ -59,7 +59,7 @@ public class DistanceService {
     private DistanceDTO getSummary(Position origin, Position destination, Addresses addresses) {
         ResponseRoute distanceBetweenAddress = apiIntegration.getDistanceBetweenAddress(origin, destination);
         Routes routes = distanceBetweenAddress.getRoutes().stream().findAny().orElseThrow(() -> new IllegalStateException("Não foi encontrado nenhuma rota."));
-        this.iAddressesRepository.save(new DistanceAddresses(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()), routes.getSummary().getLengthInMeters(), origin, destination));
+        this.iAddressesRepository.save(new DistanceAddresses(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()).trim(), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()).trim(), routes.getSummary().getLengthInMeters(), origin, destination));
         return new DistanceDTO(routes.getSummary().getLengthInMeters(), origin, destination);
     }
 
