@@ -1,23 +1,15 @@
 package br.com.hbsis.distance.payloads;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@Getter
+@AllArgsConstructor
 public class Addresses {
 
     private AddressDTO origin;
     private AddressDTO destination;
 
-    public Addresses() {
-    }
-
-    public Addresses(AddressDTO origin, AddressDTO destination) {
-        this.origin = origin;
-        this.destination = destination;
-    }
-
-    public AddressDTO getOrigin() {
-        return origin;
-    }
-
-    public AddressDTO getDestination() {
-        return destination;
-    }
 }

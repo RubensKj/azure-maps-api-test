@@ -1,17 +1,13 @@
 package br.com.hbsis.distance.services;
 
-import br.com.hbsis.distance.payloads.AddressDTO;
-import br.com.hbsis.distance.payloads.Addresses;
-import br.com.hbsis.distance.payloads.DistanceAddresses;
-import br.com.hbsis.distance.payloads.DistanceDTO;
+import br.com.hbsis.distance.payloads.*;
 import br.com.hbsis.distance.payloads.apiintegration.*;
 import br.com.hbsis.distance.repositories.IAddressesRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import static br.com.hbsis.distance.utils.ValidationUtils.validadeIfEmpty;
-import static br.com.hbsis.distance.utils.ValidationUtils.validateIfNull;
+import static br.com.hbsis.distance.utils.ValidationUtils.*;
 
 @Service
 public class DistanceService {
@@ -25,11 +21,11 @@ public class DistanceService {
         this.iAddressesRepository = iAddressesRepository;
     }
 
-    public DistanceDTO getDistancesByCities(Addresses addresses) {
+    public DistanceDTO getDistancesByCities(Addresses addresses) throws AddressTooLong {
         return this.getDistanceBetweenAddresses(addresses);
     }
 
-    private void validate(Addresses addresses) {
+    private void validate(Addresses addresses) throws AddressTooLong {
         validateIfNull(addresses.getOrigin().getBairro(), "bairro da origem não pode ser nulo");
         validateIfNull(addresses.getOrigin().getCidade(), "cidade da origem não pode ser nula");
         validateIfNull(addresses.getOrigin().getEstado(), "estado (UF) da origem não pode ser nulo");
@@ -41,9 +37,14 @@ public class DistanceService {
         validadeIfEmpty(addresses.getOrigin().getCidade(), "cidade do destino não pode ser vazia");
         validadeIfEmpty(addresses.getDestination().getCidade(), "cidade do destino não pode ser vazia");
         validadeIfEmpty(addresses.getDestination().getBairro(), "bairro do destino não pode ser vazio");
+
+        validateStringSize(addresses.getOrigin().getBairro(), "Tamanho do campo bairro de origem muito grande");
+        validateStringSize(addresses.getOrigin().getCidade(), "Tamanho do campo cidade de origem muito grande");
+        validateStringSize(addresses.getDestination().getBairro(), "Tamanho do campo bairro de destino muito grande");
+        validateStringSize(addresses.getDestination().getCidade(), "Tamanho do campo cidade de destino muito grande");
     }
 
-    private DistanceDTO getDistanceBetweenAddresses(Addresses addresses) {
+    private DistanceDTO getDistanceBetweenAddresses(Addresses addresses) throws AddressTooLong {
         this.validate(addresses);
         if (this.validateIfDistanceHasAlreadyBeenCalculated(addresses)) {
             DistanceAddresses distanceAddresses = this.findByOriginAndDestination(this.apiIntegration.getAddressInStringByDTO(addresses.getOrigin()), this.apiIntegration.getAddressInStringByDTO(addresses.getDestination()));
