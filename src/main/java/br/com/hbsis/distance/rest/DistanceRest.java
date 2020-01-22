@@ -1,5 +1,6 @@
 package br.com.hbsis.distance.rest;
 
+import br.com.hbsis.distance.payloads.AddressTooLong;
 import br.com.hbsis.distance.payloads.Addresses;
 import br.com.hbsis.distance.payloads.DistanceAddresses;
 import br.com.hbsis.distance.payloads.DistanceDTO;
@@ -22,7 +23,7 @@ public class DistanceRest {
     }
 
     @PostMapping("/distance-between")
-    public DistanceDTO getDistanceByCities(@Valid @RequestBody Addresses addresses) {
+    public DistanceDTO getDistanceByCities(@Valid @RequestBody Addresses addresses) throws AddressTooLong {
         return this.distanceService.getDistancesByCities(addresses);
     }
 

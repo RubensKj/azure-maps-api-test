@@ -1,5 +1,11 @@
 package br.com.hbsis.distance.payloads.apiintegration;
 
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class Summary {
 
     private int lengthInMeters;
@@ -8,26 +14,4 @@ public class Summary {
     private String departureTime;
     private String arrivalTime;
 
-    public Summary() {
-    }
-
-    public int getLengthInMeters() {
-        return lengthInMeters;
-    }
-
-    public int getTravelTimeInSeconds() {
-        return travelTimeInSeconds;
-    }
-
-    public int getTrafficDelayInSeconds() {
-        return trafficDelayInSeconds;
-    }
-
-    public String getDepartureTime() {
-        return departureTime;
-    }
-
-    public String getArrivalTime() {
-        return arrivalTime;
-    }
 }

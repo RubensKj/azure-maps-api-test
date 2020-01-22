@@ -1,17 +1,15 @@
 package br.com.hbsis.distance.payloads.apiintegration;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.Comparator;
 
+@NoArgsConstructor
+@Getter
 public class Routes implements Comparator<Routes> {
 
     private Summary summary;
-
-    public Routes() {
-    }
-
-    public Summary getSummary() {
-        return summary;
-    }
 
     @Override
     public int compare(Routes o1, Routes o2) {
